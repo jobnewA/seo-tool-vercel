@@ -28,7 +28,7 @@ module.exports = async function handler(req, res) {
         'X-Title': 'SEO Pro Tool v6',
       },
       body: JSON.stringify({
-        model: body.model || 'google/gemini-2.0-flash-exp:free',
+        model: body.model || 'inclusionai/ling-2.6-flash:free,
         messages: body.messages,
         max_tokens: body.max_tokens || 2400,
       }),
