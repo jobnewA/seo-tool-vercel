@@ -9,6 +9,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
 <link rel="stylesheet" href="style.css">
+  <script>
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false; // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false; // Ctrl+Shift+I
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false; // Ctrl+Shift+J
+    if (e.ctrlKey && e.keyCode == 85) return false; // Ctrl+U
+};
+    setInterval(function() {
+    if (window.outerWidth - window.innerWidth > 160 || 
+        window.outerHeight - window.innerHeight > 160) {
+        document.body.innerHTML = "🚫 ممنوع الفحص";
+    }
+}, 1000);
+</script>
 </head>
 <body>
 
