@@ -26,7 +26,7 @@ seo-tool-vercel/
 ### الخطوة 2 — رفع المشروع
 
 **الطريقة السهلة (Drag & Drop):**
-1. اضغط "Add New Project"ش
+1. اضغط "Add New Project"
 2. اختر "Import from Git" أو "Browse"
 3. ارفع مجلد `seo-tool-vercel` كاملاً
 

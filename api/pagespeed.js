@@ -3,7 +3,7 @@
 //  المفتاح محفوظ في بيئة Vercel — مش ظاهر للعميل
 // ═══════════════════════════════════════════════════════
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -19,12 +19,10 @@ export default async function handler(req, res) {
 
   try {
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=${strategy.toUpperCase()}&key=${PS_KEY}&locale=ar&category=PERFORMANCE&category=ACCESSIBILITY&category=SEO&category=BEST_PRACTICES`;
-    
     const upstream = await fetch(apiUrl);
     const data = await upstream.json();
-    
     return res.status(upstream.status).json(data);
   } catch (err) {
     return res.status(500).json({ error: 'Server error: ' + err.message });
   }
-}
+};
