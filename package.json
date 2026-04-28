@@ -1,0 +1,9 @@
+{
+  "name": "seo-pro-tool-v6",
+  "version": "6.0.0",
+  "description": "SEO Pro Tool v6 — Full Stack with hidden API keys",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}

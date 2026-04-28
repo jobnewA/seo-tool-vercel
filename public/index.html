@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>SEO Pro Tool v5.0 — أداة SEO المتكاملة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="v5-badge"><span class="v5-dot"></span>SEO Pro Tool v5.0 — Maximum Power + AI Assistant</div>
+  <h1>🔍 أداة SEO المتكاملة</h1>
+  <p>Schema · Meta · تحليل · اقتراحات · Robots · OG · منافس · محتوى · 404 · مقارنة · كثافة · إملاء · كلمات محلية · ضغط صور · <strong style="color:var(--green)">سرعة المتجر ⚡</strong></p>
+  <div class="header-features">
+    <span class="hf">✅ فحص HTML حقيقي</span>
+    <span class="hf">🔗 كاشف 404</span>
+    <span class="hf">📊 مقارنة صفحتين</span>
+    <span class="hf">🔢 كثافة الكلمات</span>
+    <span class="hf">📝 مدقق إملائي</span>
+    <span class="hf">🌍 كلمات محلية</span>
+    <span class="hf">📤 تصدير PDF</span>
+    <span class="hf">🖼️ ضغط صور</span>
+    <span class="hf" style="background:rgba(16,212,144,.12);border-color:rgba(16,212,144,.3);color:var(--green)">⚡ سرعة المتجر جديد</span>
+    <span class="hf" style="background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.3);color:#c4b5fd">🤖 AI Assistant جديد</span>
+    <span class="hf">🌙 Dark/Light</span>
+  </div>
+</div>
+
+<button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">☀️ فاتح</button>
+
+<div class="container">
+
+<!-- model-id hidden — used internally, no user input needed -->
+<input type="hidden" id="model-id" value="google/gemini-2.0-flash-exp:free"/>
+
+<!-- TABS ROW 1 -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('schema',this)"><span class="tab-icon">📋</span>Schema</button>
+  <button class="tab" onclick="switchTab('meta',this)"><span class="tab-icon">🏷️</span>Meta & KW</button>
+  <button class="tab" onclick="switchTab('audit',this)"><span class="tab-icon">🔎</span>تحليل شامل</button>
+  <button class="tab" onclick="switchTab('tips',this)"><span class="tab-icon">💡</span>اقتراحات</button>
+  <button class="tab" onclick="switchTab('robots',this)"><span class="tab-icon">🤖</span>Robots/Sitemap</button>
+  <button class="tab" onclick="switchTab('og',this)"><span class="tab-icon">📣</span>Open Graph</button>
+  <button class="tab" onclick="switchTab('competitor',this)"><span class="tab-icon">⚔️</span>منافس</button>
+  <button class="tab" onclick="switchTab('content',this)"><span class="tab-icon">✍️</span>محتوى</button>
+</div>
+<!-- TABS ROW 2 — NEW -->
+<div class="tabs" style="margin-top:-8px">
+  <button class="tab" onclick="switchTab('broken',this)"><span class="tab-icon">🔗</span>فحص 404</button>
+  <button class="tab" onclick="switchTab('compare',this)"><span class="tab-icon">📊</span>مقارنة صفحتين</button>
+  <button class="tab" onclick="switchTab('density',this)"><span class="tab-icon">🔢</span>كثافة الكلمات</button>
+  <button class="tab" onclick="switchTab('spell',this)"><span class="tab-icon">📝</span>مدقق إملائي</button>
+  <button class="tab" onclick="switchTab('localkw',this)"><span class="tab-icon">🌍</span>كلمات محلية</button>
+  <button class="tab" onclick="switchTab('beforeafter',this)"><span class="tab-icon">🔄</span>قبل/بعد</button>
+  <button class="tab" onclick="switchTab('imgcompress',this)"><span class="tab-icon">🖼️</span>ضغط صور</button>
+  <button class="tab" onclick="switchTab('codeminify',this)"><span class="tab-icon">⚡</span>ضغط كود</button>
+  <button class="tab" onclick="switchTab('kwplanner',this)" style="background:linear-gradient(135deg,rgba(245,166,35,.08),rgba(251,146,60,.08));border-color:rgba(245,166,35,.25);color:var(--yellow)"><span class="tab-icon">🔑</span>Keyword Planner</button>
+  <button class="tab" onclick="switchTab('pagespeed',this)" style="background:linear-gradient(135deg,rgba(16,212,144,.1),rgba(6,198,224,.1));border-color:rgba(16,212,144,.3);color:var(--green)"><span class="tab-icon">🚀</span>سرعة المتجر</button>
+</div>
+
+<!-- ══════════ PANEL 1: SCHEMA ══════════ -->
+<div class="panel" id="panel-schema" style="display:block">
+  <div class="card">
+    <div class="card-title"><span class="icon">📋</span> مولد Schema Markup</div>
+    <div class="seg-btns">
+      <button class="seg-btn on" onclick="setSchemaType('Article',this)">Article</button>
+      <button class="seg-btn" onclick="setSchemaType('NewsArticle',this)">NewsArticle</button>
+      <button class="seg-btn" onclick="setSchemaType('BlogPosting',this)">BlogPosting</button>
+      <button class="seg-btn" onclick="setSchemaType('Product',this)">Product</button>
+      <button class="seg-btn" onclick="setSchemaType('LocalBusiness',this)">LocalBusiness</button>
+      <button class="seg-btn" onclick="setSchemaType('FAQPage',this)">FAQPage</button>
+      <button class="seg-btn" onclick="setSchemaType('Event',this)">Event</button>
+    </div>
+    <div id="schema-fields">
+      <div class="row">
+        <div class="field"><label>URL</label><input type="url" id="s-url" placeholder="https://example.com/page"/></div>
+        <div class="field"><label>Headline / الاسم</label><input type="text" id="s-headline" maxlength="110" oninput="counter('s-headline','s-hl-c',110)" placeholder="عنوان أو اسم"/><div class="counter" id="s-hl-c">0 / 110</div></div>
+      </div>
+      <div class="field"><label>وصف قصير</label><textarea id="s-desc" placeholder="وصف مختصر..." style="min-height:60px"></textarea></div>
+      <label style="margin-bottom:8px">الصور</label>
+      <div id="img-list"><div class="img-row"><input type="url" placeholder="Image URL #1" class="img-input"/><button class="btn btn-sm" onclick="addImg()">+ صورة</button></div></div>
+      <div class="row" style="margin-top:12px">
+        <div class="field"><label>نوع المؤلف</label><select id="s-atype"><option value="Person">Person</option><option value="Organization">Organization</option></select></div>
+        <div class="field"><label>اسم المؤلف / الجهة</label><input type="text" id="s-aname" placeholder="الاسم"/></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Author URL</label><input type="url" id="s-aurl" placeholder="https://..."/></div>
+        <div class="field"><label>Publisher</label><input type="text" id="s-pub" placeholder="اسم الناشر"/></div>
+      </div>
+      <div class="field"><label>Publisher Logo URL</label><input type="url" id="s-logo" placeholder="https://example.com/logo.png"/></div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="generateSchema()">⚡ توليد Schema</button>
+      <button class="btn btn-ghost" onclick="clearSchema()">مسح</button>
+    </div>
+  </div>
+  <div id="schema-out" style="display:none" class="card">
+    <div class="output-header"><span class="output-label">📄 Schema JSON-LD — الصقه في &lt;head&gt;</span><button class="copy-btn" onclick="copyEl('schema-code')">📋 نسخ</button></div>
+    <div class="output" id="schema-code"></div>
+    <p style="margin-top:8px"><a href="https://search.google.com/test/rich-results" target="_blank" style="font-size:12px;color:var(--green);">✅ اختبر الـ Schema في Google ↗</a>&nbsp;&nbsp;<a href="https://validator.schema.org" target="_blank" style="font-size:12px;color:var(--accent);">🔍 Schema Validator ↗</a></p>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 2: META ══════════ -->
+<div class="panel" id="panel-meta">
+  <div class="card">
+    <div class="card-title"><span class="icon">🏷️</span> Meta Description & Keywords</div>
+    <div class="field"><label>الكلمة المفتاحية الرئيسية *</label><input type="text" id="kw" placeholder="مثال: أفضل مطاعم القاهرة"/></div>
+    <div class="field"><label>سياق المحتوى (اختياري)</label><textarea id="kw-ctx" placeholder="وصف عن موضوع المقال أو الصفحة..." style="min-height:60px"></textarea></div>
+    <div class="row">
+      <div class="field"><label>لغة المحتوى</label><select id="kw-lang"><option value="ar">العربية</option><option value="en">الإنجليزية</option></select></div>
+      <div class="field"><label>نوع الصفحة</label><select id="kw-pagetype"><option>مقال / مدونة</option><option>منتج</option><option>خدمة</option><option>صفحة رئيسية</option><option>تصنيف</option></select></div>
+    </div>
+    <button class="btn btn-primary" onclick="generateMeta()">⚡ توليد المحتوى</button>
+    <div class="loader" id="meta-loader"></div>
+  </div>
+  <div id="meta-out" style="display:none">
+    <div class="card"><div class="output-header"><span class="output-label">📝 Meta Description — 150 حرف</span><button class="copy-btn" onclick="copyEl('meta-150')">📋 نسخ</button></div><div class="meta-box" id="meta-150"></div></div>
+    <div class="card"><div class="output-header"><span class="output-label">📝 Meta Description — 180 حرف</span><button class="copy-btn" onclick="copyEl('meta-180')">📋 نسخ</button></div><div class="meta-box" id="meta-180"></div></div>
+    <div class="card"><div class="output-header"><span class="output-label">❓ الأسئلة الشائعة FAQ</span><button class="copy-btn" onclick="copyFaq()">📋 نسخ</button></div><div id="meta-faq"></div></div>
+    <div class="card"><div class="output-header"><span class="output-label">🔑 كلمات مفتاحية SEO</span><button class="copy-btn" onclick="copyKws()">📋 نسخ</button></div><div class="kw-tags" id="meta-kws"></div></div>
+    <div class="card"><div class="output-header"><span class="output-label">📰 مقترحات عناوين (Title Tags)</span><button class="copy-btn" onclick="copyEl('meta-titles')">📋 نسخ</button></div><div id="meta-titles" style="font-size:13px;line-height:2;color:var(--text)"></div></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 3: AUDIT ══════════ -->
+<div class="panel" id="panel-audit">
+  <div class="card">
+    <div class="card-title"><span class="icon">🔎</span> تحليل شامل للصفحة / المتجر <span style="font-size:11px;color:var(--green);background:rgba(16,212,144,.1);border:1px solid rgba(16,212,144,.2);padding:2px 8px;border-radius:99px;font-weight:700">v4 — فحص حقيقي</span></div>
+    <div class="field"><label>رابط الصفحة أو المتجر *</label><input type="url" id="audit-url" placeholder="https://example.com"/></div>
+    <div style="background:rgba(59,126,248,.07);border:1px solid rgba(59,126,248,.15);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--muted2);margin-bottom:12px;line-height:1.8">
+      ⚡ <strong style="color:var(--accent)">النسخة v4</strong> تجلب HTML الصفحة الحقيقي وتفحصها فعلياً: سوشيال ميديا، واتساب، Schema، Title، Meta، Canonical، وأكثر — ثم تعمق التحليل بالذكاء الاصطناعي لمعلومات السرعة، الدومين، وأدوات Google.
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runAuditV3()">🔍 تحليل شامل حقيقي</button>
+    </div>
+    <div class="loader" id="audit-loader"></div>
+    <div class="loader-text" id="audit-loader-text">⏳ جاري جلب بيانات الموقع...</div>
+  </div>
+
+  <div id="audit-out" style="display:none">
+    <!-- Export Bar -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center">
+      <span style="font-size:12px;color:var(--muted2);font-weight:700">📤 تصدير التقرير:</span>
+      <button class="print-btn pdf-btn" onclick="exportPDF()">📄 تصدير PDF</button>
+      <button class="print-btn" onclick="window.print()">🖨️ طباعة</button>
+      <button class="print-btn" style="background:linear-gradient(135deg,#0284c7,#0369a1)" onclick="saveAuditSnapshot()">💾 حفظ لقطة</button>
+    </div>
+    <!-- Score + Domain Info -->
+    <div class="card" id="audit-summary-card">
+      <div class="card-title"><span class="icon">📊</span> ملخص التحليل</div>
+      <div id="audit-summary-content"></div>
+    </div>
+
+    <!-- Real HTML Checks -->
+    <div class="card" id="audit-html-card">
+      <div class="card-title"><span class="icon">🧬</span> فحص HTML الحقيقي <span class="real-check-badge fetched" id="fetch-badge">🌐 بيانات مباشرة</span></div>
+      <div id="audit-html-checks"></div>
+    </div>
+
+    <!-- Sitemap + Robots check -->
+    <div class="card" id="audit-files-card">
+      <div class="card-title"><span class="icon">📁</span> ملفات الموقع (Sitemap & Robots)</div>
+      <div id="audit-files-checks"></div>
+    </div>
+
+    <!-- AI Deep Analysis -->
+    <div class="card" id="audit-ai-card">
+      <div class="card-title"><span class="icon">🤖</span> التحليل المعمّق بالذكاء الاصطناعي</div>
+      <div id="audit-ai-content"></div>
+    </div>
+
+    <!-- Issues -->
+    <div class="card" id="audit-issues-card">
+      <div class="card-title"><span class="icon">🐛</span> المشاكل والتوصيات</div>
+      <div id="audit-issues"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 4: TIPS ══════════ -->
+<div class="panel" id="panel-tips">
+  <div class="card">
+    <div class="card-title"><span class="icon">💡</span> اقتراحات التحسين الذكية</div>
+    <div class="field"><label>رابط الموقع *</label><input type="url" id="tips-url" placeholder="https://example.com"/></div>
+    <div class="row">
+      <div class="field"><label>نوع الموقع</label><select id="tips-type"><option>متجر إلكتروني</option><option>مدونة</option><option>موقع خدمات</option><option>موقع شركة</option><option>موقع أخبار</option></select></div>
+      <div class="field"><label>اللغة المستهدفة</label><select id="tips-lang"><option>العربية</option><option>الإنجليزية</option><option>كلاهما</option></select></div>
+    </div>
+    <div class="field"><label>ملاحظات إضافية</label><textarea id="tips-notes" placeholder="أي مشاكل معروفة أو أهداف محددة..." style="min-height:60px"></textarea></div>
+    <button class="btn btn-primary" onclick="generateTips()">⚡ توليد 10 اقتراحات</button>
+    <div class="loader" id="tips-loader"></div>
+  </div>
+  <div id="tips-out" style="display:none" class="card">
+    <div class="output-header"><span class="output-label">💡 اقتراحات التحسين</span><button class="copy-btn" onclick="copyEl('tips-content')">📋 نسخ</button></div>
+    <div id="tips-content" style="margin-top:.5rem"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 5: ROBOTS / SITEMAP ══════════ -->
+<div class="panel" id="panel-robots">
+  <div class="card">
+    <div class="card-title"><span class="icon">🤖</span> مولد Robots.txt & Sitemap.xml</div>
+    <div class="field"><label>رابط الموقع الرئيسي *</label><input type="url" id="rob-url" placeholder="https://example.com"/></div>
+    <div class="row">
+      <div class="field"><label>المنصة</label><select id="rob-platform"><option value="custom">موقع مخصص / WordPress</option><option value="shopify">Shopify</option><option value="salla">سلة Salla</option><option value="zid">زد Zid</option><option value="woo">WooCommerce</option><option value="blogger">Blogger</option></select></div>
+      <div class="field"><label>تضمين صفحات البحث؟</label><select id="rob-search"><option value="no">لا (مستحسن)</option><option value="yes">نعم</option></select></div>
+    </div>
+    <div class="field"><label>مسارات إضافية تريد حجبها (سطر لكل مسار)</label><textarea id="rob-disallow" placeholder="/admin/&#10;/private/&#10;/tmp/" style="min-height:70px"></textarea></div>
+    <div class="field"><label>روابط الصفحات لملف Sitemap (سطر لكل رابط)</label><textarea id="rob-pages" placeholder="https://example.com/&#10;https://example.com/about&#10;https://example.com/products" style="min-height:100px"></textarea></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="generateRobots()">⚡ توليد Robots.txt</button>
+      <button class="btn btn-ghost" onclick="generateSitemap()">🗺️ توليد Sitemap.xml</button>
+      <button class="btn btn-purple" onclick="genRobotsSitemapAI()">🤖 ذكاء اصطناعي</button>
+    </div>
+    <div class="loader" id="robots-loader"></div>
+  </div>
+  <div id="robots-out" style="display:none" class="card">
+    <div class="file-tabs">
+      <button class="file-tab on" onclick="showFile('robots-file',this)">robots.txt</button>
+      <button class="file-tab" onclick="showFile('sitemap-file',this)">sitemap.xml</button>
+    </div>
+    <div id="robots-file">
+      <div class="output-header"><span class="output-label">🤖 robots.txt</span><button class="copy-btn" onclick="copyEl('robots-code')">📋 نسخ</button></div>
+      <div class="output" id="robots-code"></div>
+    </div>
+    <div id="sitemap-file" style="display:none">
+      <div class="output-header"><span class="output-label">🗺️ sitemap.xml</span><button class="copy-btn" onclick="copyEl('sitemap-code')">📋 نسخ</button></div>
+      <div class="output" id="sitemap-code"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 6: OPEN GRAPH ══════════ -->
+<div class="panel" id="panel-og">
+  <div class="card">
+    <div class="card-title"><span class="icon">📣</span> Open Graph Tags (سوشيال ميديا)</div>
+    <div class="row">
+      <div class="field"><label>نوع الصفحة</label><select id="og-type"><option value="website">website</option><option value="article">article</option><option value="product">product</option></select></div>
+      <div class="field"><label>اسم الموقع</label><input type="text" id="og-site" placeholder="اسم موقعك"/></div>
+    </div>
+    <div class="field"><label>Title (العنوان) *</label><input type="text" id="og-title" maxlength="60" oninput="counter('og-title','og-tc',60)" placeholder="عنوان الصفحة"/><div class="counter" id="og-tc">0 / 60</div></div>
+    <div class="field"><label>Description (الوصف)</label><textarea id="og-desc" placeholder="وصف مختصر جذاب..." style="min-height:60px" maxlength="200" oninput="counter('og-desc','og-dc',200)"></textarea><div class="counter" id="og-dc">0 / 200</div></div>
+    <div class="row">
+      <div class="field"><label>URL الصفحة</label><input type="url" id="og-url" placeholder="https://example.com/page"/></div>
+      <div class="field"><label>Image URL (1200x630)</label><input type="url" id="og-img" placeholder="https://example.com/image.jpg"/></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Twitter Card Type</label><select id="tw-type"><option value="summary_large_image">summary_large_image</option><option value="summary">summary</option></select></div>
+      <div class="field"><label>Twitter Username</label><input type="text" id="tw-user" placeholder="@username"/></div>
+    </div>
+    <button class="btn btn-primary" onclick="generateOG()">⚡ توليد OG Tags</button>
+  </div>
+  <div id="og-out" style="display:none" class="card">
+    <div class="output-header"><span class="output-label">📣 Open Graph + Twitter Tags — الصق في &lt;head&gt;</span><button class="copy-btn" onclick="copyEl('og-code')">📋 نسخ</button></div>
+    <div class="output" id="og-code"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 7: COMPETITOR ══════════ -->
+<div class="panel" id="panel-competitor">
+  <div class="card">
+    <div class="card-title"><span class="icon">⚔️</span> تحليل المنافسين</div>
+    <div class="field"><label>رابط موقعك *</label><input type="url" id="comp-mine" placeholder="https://mysite.com"/></div>
+    <div class="field"><label>رابط موقع المنافس *</label><input type="url" id="comp-rival" placeholder="https://competitor.com"/></div>
+    <div class="field"><label>الكلمة المفتاحية المستهدفة</label><input type="text" id="comp-kw" placeholder="مثال: شراء عطور أونلاين"/></div>
+    <button class="btn btn-primary" onclick="analyzeCompetitor()">⚡ تحليل المنافس</button>
+    <div class="loader" id="comp-loader"></div>
+  </div>
+  <div id="comp-out" style="display:none" class="card">
+    <div class="output-header"><span class="output-label">⚔️ تقرير المنافسة</span><button class="copy-btn" onclick="copyEl('comp-content')">📋 نسخ</button></div>
+    <div id="comp-content" style="font-size:13px;line-height:1.9;color:var(--text)"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 8: CONTENT ══════════ -->
+<div class="panel" id="panel-content">
+  <div class="card">
+    <div class="card-title"><span class="icon">✍️</span> مساعد كتابة المحتوى SEO</div>
+    <div class="seg-btns" id="content-type-btns">
+      <button class="seg-btn on" onclick="setContentType('outline',this)">مخطط مقال</button>
+      <button class="seg-btn" onclick="setContentType('intro',this)">مقدمة مقال</button>
+      <button class="seg-btn" onclick="setContentType('product',this)">وصف منتج</button>
+      <button class="seg-btn" onclick="setContentType('category',this)">وصف تصنيف</button>
+      <button class="seg-btn" onclick="setContentType('rewrite',this)">إعادة صياغة SEO</button>
+    </div>
+    <div class="field"><label>الكلمة المفتاحية أو الموضوع *</label><input type="text" id="cont-kw" placeholder="مثال: أفضل سماعات 2025"/></div>
+    <div class="row">
+      <div class="field"><label>اللغة</label><select id="cont-lang"><option value="ar">العربية</option><option value="en">الإنجليزية</option></select></div>
+      <div class="field"><label>طول المحتوى</label><select id="cont-len"><option value="short">قصير (300 كلمة)</option><option value="medium" selected>متوسط (600 كلمة)</option><option value="long">طويل (1000+ كلمة)</option></select></div>
+    </div>
+    <div class="field" id="rewrite-field" style="display:none"><label>النص الأصلي (للإعادة صياغة)</label><textarea id="cont-original" placeholder="الصق النص هنا..." style="min-height:120px"></textarea></div>
+    <button class="btn btn-primary" onclick="generateContent()">⚡ توليد المحتوى</button>
+    <div class="loader" id="content-loader"></div>
+  </div>
+  <div id="content-out" style="display:none" class="card">
+    <div class="output-header"><span class="output-label">✍️ المحتوى المولّد</span><button class="copy-btn" onclick="copyEl('content-result')">📋 نسخ</button></div>
+    <div id="content-result" style="font-size:13px;line-height:2;color:var(--text);white-space:pre-wrap"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 9: 404 CHECKER ══════════ -->
+<div class="panel" id="panel-broken">
+  <div class="card">
+    <div class="card-title"><span class="icon">🔗</span> فاحص الروابط المكسورة (404)</div>
+    <div style="background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.18);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--muted2);margin-bottom:12px;line-height:1.8">
+      ⚡ يجلب الصفحة ويفحص <strong style="color:var(--yellow)">كل رابط</strong> بداخلها — يكتشف الروابط الداخلية والخارجية المكسورة أو التي تُعيد توجيهاً.
+    </div>
+    <div class="field"><label>رابط الصفحة المراد فحصها *</label><input type="url" id="broken-url" placeholder="https://example.com"/></div>
+    <div class="row">
+      <div class="field"><label>نوع الروابط للفحص</label>
+        <select id="broken-type">
+          <option value="all">الكل (داخلية + خارجية)</option>
+          <option value="internal">داخلية فقط</option>
+          <option value="external">خارجية فقط</option>
+        </select>
+      </div>
+      <div class="field"><label>حد أقصى للروابط</label>
+        <select id="broken-limit">
+          <option value="100">100 رابط</option>
+          <option value="200" selected>200 رابط</option>
+          <option value="400">400 رابط</option>
+          <option value="600">600 رابط</option>
+          <option value="800">800 رابط</option>
+          <option value="1000">1000 رابط</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="checkBrokenLinks()">🔍 فحص الروابط</button>
+    <div class="loader" id="broken-loader"></div>
+    <div class="loader-text" id="broken-loader-text" style="display:none">⏳ جاري الفحص...</div>
+  </div>
+  <div id="broken-out" style="display:none" class="card">
+    <div class="output-header">
+      <span class="output-label">🔗 نتائج فحص الروابط</span>
+      <div style="display:flex;gap:6px">
+        <span id="broken-stats-ok" class="badge badge-ok">✓ 0</span>
+        <span id="broken-stats-broken" class="badge badge-err">✗ 0</span>
+        <span id="broken-stats-warn" class="badge badge-warn">⚠ 0</span>
+      </div>
+    </div>
+    <div style="margin-top:10px" id="broken-results"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 10: SEO COMPARE ══════════ -->
+<div class="panel" id="panel-compare">
+  <div class="card">
+    <div class="card-title"><span class="icon">📊</span> مقارنة SEO بين صفحتين</div>
+    <div class="row">
+      <div class="field"><label>🅰️ الصفحة الأولى *</label><input type="url" id="cmp-url-a" placeholder="https://mysite.com/page-a"/></div>
+      <div class="field"><label>🅱️ الصفحة الثانية *</label><input type="url" id="cmp-url-b" placeholder="https://mysite.com/page-b"/></div>
+    </div>
+    <button class="btn btn-primary" onclick="comparePages()">📊 مقارنة الصفحتين</button>
+    <div class="loader" id="cmp-loader"></div>
+    <div class="loader-text" id="cmp-loader-text" style="display:none">⏳ جاري تحليل الصفحتين...</div>
+  </div>
+  <div id="cmp-out" style="display:none" class="card">
+    <div class="card-title"><span class="icon">📊</span> نتائج المقارنة</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <div class="compare-col" id="cmp-col-a"><h4 style="color:var(--accent)">🅰️ الصفحة الأولى</h4></div>
+      <div class="compare-col" id="cmp-col-b"><h4 style="color:var(--accent3)">🅱️ الصفحة الثانية</h4></div>
+    </div>
+    <div id="cmp-winner" style="margin-top:8px"></div>
+    <div id="cmp-ai-analysis" style="margin-top:1rem"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 11: KEYWORD DENSITY ══════════ -->
+<div class="panel" id="panel-density">
+  <div class="card">
+    <div class="card-title"><span class="icon">🔢</span> حاسبة كثافة الكلمة المفتاحية</div>
+    <div style="background:rgba(59,126,248,.07);border:1px solid rgba(59,126,248,.15);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--muted2);margin-bottom:12px;line-height:1.8">
+      💡 الكثافة المثالية للكلمة المفتاحية الرئيسية: <strong style="color:var(--green)">1% — 3%</strong>. أقل من 1% = ضعيف، أكثر من 3% = حشو مضر بالـ SEO.
+    </div>
+    <div class="field"><label>الكلمة المفتاحية المستهدفة *</label><input type="text" id="dens-kw" placeholder="مثال: سماعات لاسلكية"/></div>
+    <div class="field"><label>النص أو المحتوى *</label><textarea id="dens-text" placeholder="الصق محتوى صفحتك هنا..." style="min-height:160px"></textarea></div>
+    <div class="row">
+      <div class="field"><label>استثناء كلمات (افصل بفاصلة)</label><input type="text" id="dens-stop" placeholder="في، من، على، إلى، هذا، التي"/></div>
+      <div class="field"><label>عرض أهم</label><select id="dens-top"><option value="10">10 كلمات</option><option value="20" selected>20 كلمة</option><option value="30">30 كلمة</option></select></div>
+    </div>
+    <button class="btn btn-primary" onclick="calcDensity()">🔢 تحليل الكثافة</button>
+  </div>
+  <div id="density-out" style="display:none" class="card">
+    <div class="card-title"><span class="icon">📊</span> نتائج الكثافة</div>
+    <div id="density-summary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem"></div>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:700;color:var(--muted2);margin-bottom:10px">📊 أعلى الكلمات تكراراً</p>
+    <div id="density-bars"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 12: SPELL + SEO CHECKER ══════════ -->
+<div class="panel" id="panel-spell">
+  <div class="card">
+    <div class="card-title"><span class="icon">📝</span> مدقق المحتوى — إملاء + SEO</div>
+    <div class="field"><label>الكلمة المفتاحية المستهدفة</label><input type="text" id="spell-kw" placeholder="مثال: أفضل هاتف 2025"/></div>
+    <div class="field"><label>المحتوى المراد تدقيقه *</label><textarea id="spell-text" placeholder="الصق النص هنا للتدقيق..." style="min-height:200px"></textarea></div>
+    <div class="row">
+      <div class="field"><label>لغة المحتوى</label><select id="spell-lang"><option value="ar">العربية</option><option value="en">الإنجليزية</option><option value="both">عربي + إنجليزي</option></select></div>
+      <div class="field"><label>نوع التدقيق</label><select id="spell-mode"><option value="full">شامل (إملاء + SEO)</option><option value="seo">SEO فقط</option><option value="grammar">لغوي فقط</option></select></div>
+    </div>
+    <button class="btn btn-primary" onclick="checkSpellSEO()">📝 تدقيق المحتوى</button>
+    <div class="loader" id="spell-loader"></div>
+  </div>
+  <div id="spell-out" style="display:none" class="card">
+    <div class="output-header"><span class="output-label">📝 نتائج التدقيق</span><button class="copy-btn" onclick="copyEl('spell-results')">📋 نسخ</button></div>
+    <div id="spell-results" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 13: LOCAL KEYWORDS ══════════ -->
+<div class="panel" id="panel-localkw">
+  <div class="card">
+    <div class="card-title"><span class="icon">🌍</span> تحليل الكلمات المفتاحية المحلية</div>
+    <div class="row">
+      <div class="field"><label>الكلمة المفتاحية الرئيسية *</label><input type="text" id="lkw-main" placeholder="مثال: مطعم بيتزا"/></div>
+      <div class="field"><label>المدينة / المنطقة *</label><input type="text" id="lkw-city" placeholder="مثال: الرياض، القاهرة، دبي"/></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>الدولة</label><select id="lkw-country">
+        <option value="sa">🇸🇦 السعودية</option><option value="eg">🇪🇬 مصر</option>
+        <option value="ae">🇦🇪 الإمارات</option><option value="kw">🇰🇼 الكويت</option>
+        <option value="qa">🇶🇦 قطر</option><option value="bh">🇧🇭 البحرين</option>
+        <option value="om">🇴🇲 عُمان</option><option value="jo">🇯🇴 الأردن</option>
+        <option value="lb">🇱🇧 لبنان</option><option value="ma">🇲🇦 المغرب</option>
+      </select></div>
+      <div class="field"><label>نوع النشاط</label><select id="lkw-type">
+        <option>متجر / محل</option><option>مطعم / كافيه</option><option>خدمات مهنية</option>
+        <option>عيادة / صحة</option><option>تعليم / أكاديمية</option><option>فندق / سياحة</option>
+        <option>بناء / عقارات</option><option>أخرى</option>
+      </select></div>
+    </div>
+    <button class="btn btn-primary" onclick="genLocalKeywords()">🌍 توليد الكلمات المحلية</button>
+    <div class="loader" id="lkw-loader"></div>
+  </div>
+  <div id="lkw-out" style="display:none" class="card">
+    <div class="output-header"><span class="output-label">🌍 الكلمات المفتاحية المحلية</span><button class="copy-btn" onclick="copyLocalKws()">📋 نسخ الكل</button></div>
+    <div id="lkw-results" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 14: BEFORE / AFTER ══════════ -->
+<div class="panel" id="panel-beforeafter">
+  <div class="card">
+    <div class="card-title"><span class="icon">🔄</span> مقارنة قبل/بعد التحسين</div>
+    <p style="font-size:12px;color:var(--muted2);margin-bottom:1rem;line-height:1.8">احفظ نتائج التحليل قبل التعديلات ثم أعد التحليل بعدها — تُظهر لك بالضبط ما تحسّن.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <div class="ba-slot">
+        <h5>📸 لقطة "قبل" — <span id="ba-before-date" style="color:var(--muted)">لم تُحفظ بعد</span></h5>
+        <div id="ba-before-content" style="font-size:12px;color:var(--muted2)">قم بتحليل موقع من قسم "تحليل شامل" ثم اضغط "حفظ لقطة" لحفظ النتائج هنا.</div>
+      </div>
+      <div class="ba-slot">
+        <h5>🆕 لقطة "بعد" — <span id="ba-after-date" style="color:var(--muted)">لم تُحفظ بعد</span></h5>
+        <div id="ba-after-content" style="font-size:12px;color:var(--muted2)">بعد إجراء التحسينات، أعد التحليل واضغط "حفظ لقطة" مرة أخرى.</div>
+      </div>
+    </div>
+    <div id="ba-diff-card" style="display:none" class="card" style="background:var(--surface2)">
+      <div class="card-title"><span class="icon">📈</span> الفرق بين الجلستين</div>
+      <div id="ba-diff-content"></div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-ghost" onclick="clearSnapshots()">🗑️ مسح اللقطات</button>
+      <button class="btn btn-ghost" onclick="exportSnapshotsPDF()">📄 تصدير PDF</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════ PANEL 15: IMAGE COMPRESSOR ══════════ -->
+<div class="panel" id="panel-imgcompress" style="display:none">
+<div class="container" style="padding-top:0">
+  <div class="card">
+    <div class="card-title"><span class="icon">🖼️</span> ضاغط وتحسين الصور للـ SEO</div>
+    <div style="background:rgba(16,212,144,.07);border:1px solid rgba(16,212,144,.18);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--muted2);margin-bottom:12px;line-height:1.8">
+      ⚡ ضغط الصور يُحسّن سرعة الموقع ويرفع SEO Score — مباشرةً في المتصفح بدون رفع لسيرفر.
+    </div>
+    <div id="img-drop-zone" style="border:2px dashed var(--border2);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:.2s;margin-bottom:1rem"
+         onclick="document.getElementById('img-file-input').click()"
+         ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+         ondragleave="this.style.borderColor='var(--border2)'"
+         ondrop="handleImgDrop(event)">
+      <div style="font-size:2.5rem;margin-bottom:8px">🖼️</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">اسحب صورك هنا أو اضغط للاختيار</div>
+      <div style="font-size:12px;color:var(--muted2)">يدعم: JPG, PNG, WebP — بدون حد للعدد</div>
+      <input type="file" id="img-file-input" multiple accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleImgFiles(this.files)"/>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>جودة الضغط</label>
+        <input type="range" id="img-quality" min="10" max="95" value="75" style="width:100%;accent-color:var(--accent)" oninput="document.getElementById('img-quality-val').textContent=this.value+'%'"/>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted2);margin-top:3px">
+          <span>أقصى ضغط</span><span id="img-quality-val" style="color:var(--accent);font-weight:700">75%</span><span>أعلى جودة</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>تحويل الصيغة</label>
+        <select id="img-format">
+          <option value="original">نفس الصيغة الأصلية</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WebP ⭐ (أفضل للـ SEO)</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>أقصى عرض (px) — 0 = بدون تغيير</label>
+        <input type="number" id="img-max-width" value="0" placeholder="مثال: 1200"/>
+      </div>
+      <div class="field">
+        <label>إضافة Alt Text تلقائي بالـ AI</label>
+        <select id="img-alt-ai">
+          <option value="no">لا</option>
+          <option value="yes">نعم (يحتاج API Key)</option>
+        </select>
+      </div>
+    </div>
+    <div id="img-compress-results" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div id="img-summary-stats" style="font-size:13px;font-weight:700;color:var(--green)"></div>
+        <button class="btn btn-primary btn-sm" onclick="downloadAllImages()">⬇️ تحميل الكل (ZIP)</button>
+      </div>
+      <div id="img-results-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════ PANEL 16: CODE MINIFIER ══════════ -->
+<div class="panel" id="panel-codeminify" style="display:none">
+<div class="container" style="padding-top:0">
+  <div class="card">
+    <div class="card-title"><span class="icon">⚡</span> ضاغط الأكواد CSS / JS / HTML</div>
+    <div style="background:rgba(59,126,248,.07);border:1px solid rgba(59,126,248,.15);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--muted2);margin-bottom:12px;line-height:1.8">
+      ⚡ ضغط الأكواد يُقلّل حجم الملفات ويُسرّع تحميل الصفحة — عامل مهم في Core Web Vitals وترتيب Google.
+    </div>
+    <div class="seg-btns" id="code-type-btns">
+      <button class="seg-btn on" onclick="setCodeType('css',this)">CSS</button>
+      <button class="seg-btn" onclick="setCodeType('js',this)">JavaScript</button>
+      <button class="seg-btn" onclick="setCodeType('html',this)">HTML</button>
+    </div>
+    <div class="field">
+      <label>الكود المراد ضغطه *</label>
+      <textarea id="code-input" placeholder="الصق الكود هنا..." style="min-height:220px;font-family:'JetBrains Mono',monospace;font-size:12px;direction:ltr;text-align:left"></textarea>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="minifyCode()">⚡ ضغط الكود</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('code-input').value='';document.getElementById('code-out').style.display='none'">مسح</button>
+    </div>
+  </div>
+  <div id="code-out" style="display:none" class="card">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem" id="code-stats-grid"></div>
+    <div class="output-header">
+      <span class="output-label">⚡ الكود المضغوط</span>
+      <div style="display:flex;gap:6px">
+        <button class="copy-btn" onclick="copyEl('code-output')">📋 نسخ</button>
+        <button class="copy-btn" onclick="downloadMinifiedCode()" style="color:var(--green);border-color:rgba(16,212,144,.3)">⬇️ تحميل</button>
+      </div>
+    </div>
+    <div class="output" id="code-output" style="max-height:300px"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════ PANEL 18: KEYWORD PLANNER ══════════ -->
+<div class="panel" id="panel-kwplanner" style="display:none">
+  <div class="card">
+    <div class="card-title"><span class="icon">🔑</span> بحث الكلمات المفتاحية <span class="new-feat-tag">⭐ جديد v6</span></div>
+    <div style="background:linear-gradient(135deg,rgba(245,166,35,.06),rgba(251,146,60,.06));border:1px solid rgba(245,166,35,.2);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--muted2);margin-bottom:14px;line-height:1.9">
+      🔑 احصل على <strong style="color:var(--yellow)">أفكار كلمات مفتاحية</strong> مع تحليل المنافسة والحجم المتوقع والكلمات الطويلة (Long-tail) — مثل Google Keyword Planner وKeywordTool.io
+    </div>
+    <div class="field">
+      <label>الكلمة المفتاحية أو الموضوع الرئيسي *</label>
+      <input type="text" id="kwp-seed" placeholder="مثال: عبايات نسائية، قهوة عربية، ساعات رجالية"/>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>البلد / السوق</label>
+        <select id="kwp-country">
+          <option value="السعودية">🇸🇦 السعودية</option>
+          <option value="مصر">🇪🇬 مصر</option>
+          <option value="الإمارات">🇦🇪 الإمارات</option>
+          <option value="الكويت">🇰🇼 الكويت</option>
+          <option value="قطر">🇶🇦 قطر</option>
+          <option value="البحرين">🇧🇭 البحرين</option>
+          <option value="الأردن">🇯🇴 الأردن</option>
+          <option value="المغرب">🇲🇦 المغرب</option>
+          <option value="الجزائر">🇩🇿 الجزائر</option>
+          <option value="عموم العرب">🌍 عموم العرب</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>نوع الصفحة / النية</label>
+        <select id="kwp-intent">
+          <option value="كل الأنواع">كل الأنواع</option>
+          <option value="شرائية (تجارية)">🛒 شرائية (Buy/Order)</option>
+          <option value="معلوماتية (بحث)">📚 معلوماتية (How/What)</option>
+          <option value="مقارنة (تقييم)">⚖️ مقارنة (Best/Review)</option>
+          <option value="محلية">📍 محلية (Near me)</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>نوع النشاط</label>
+        <select id="kwp-type">
+          <option value="متجر إلكتروني">🛍️ متجر إلكتروني</option>
+          <option value="خدمات">🔧 خدمات</option>
+          <option value="مدونة / محتوى">📝 مدونة / محتوى</option>
+          <option value="مطعم / كافيه">🍕 مطعم / كافيه</option>
+          <option value="عقارات">🏠 عقارات</option>
+          <option value="سياحة وسفر">✈️ سياحة وسفر</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>عدد الكلمات المطلوبة</label>
+        <select id="kwp-count">
+          <option value="20">20 كلمة</option>
+          <option value="30" selected>30 كلمة</option>
+          <option value="50">50 كلمة</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runKwPlanner()" style="background:linear-gradient(135deg,var(--yellow),var(--orange))">🔍 ابحث عن الكلمات المفتاحية</button>
+      <button class="btn btn-ghost" onclick="clearKwPlanner()">مسح</button>
+    </div>
+    <div class="loader" id="kwp-loader"></div>
+    <div class="loader-text" id="kwp-loader-text">⏳ جاري تحليل الكلمات المفتاحية...</div>
+  </div>
+
+  <div id="kwp-out" style="display:none">
+    <!-- Summary stats -->
+    <div class="card" id="kwp-stats-card">
+      <div class="card-title"><span class="icon">📊</span> ملخص النتائج</div>
+      <div id="kwp-stats-content"></div>
+    </div>
+    <!-- Main Keywords Table -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">🔑</span> الكلمات المفتاحية
+        <div style="margin-right:auto;display:flex;gap:6px">
+          <button class="copy-btn" onclick="copyKwTable()" style="font-size:11px">📋 نسخ الكل</button>
+          <button class="copy-btn" onclick="exportKwCSV()" style="font-size:11px;color:var(--green);border-color:rgba(16,212,144,.3)">⬇️ تصدير CSV</button>
+        </div>
+      </div>
+      <!-- Filter tabs -->
+      <div class="seg-btns" id="kwp-filter-btns" style="margin-bottom:12px">
+        <button class="seg-btn on" onclick="filterKw('all',this)">الكل</button>
+        <button class="seg-btn" onclick="filterKw('low',this)">🟢 منافسة منخفضة</button>
+        <button class="seg-btn" onclick="filterKw('medium',this)">🟡 منافسة متوسطة</button>
+        <button class="seg-btn" onclick="filterKw('high',this)">🔴 منافسة عالية</button>
+        <button class="seg-btn" onclick="filterKw('longtail',this)">📌 Long-tail</button>
+      </div>
+      <div id="kwp-table-wrap"></div>
+    </div>
+    <!-- Content Ideas -->
+    <div class="card">
+      <div class="card-title"><span class="icon">💡</span> أفكار محتوى من الكلمات المفتاحية</div>
+      <div id="kwp-ideas" style="font-size:13px;line-height:2;color:var(--text)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PANEL 17: PAGE SPEED ══════════ -->
+<div class="panel" id="panel-pagespeed">
+  <div class="card">
+    <div class="card-title"><span class="icon">🚀</span> تحليل سرعة المتجر / الموقع <span class="new-feat-tag">⚡ جديد v5</span></div>
+    <div style="background:linear-gradient(135deg,rgba(16,212,144,.06),rgba(6,198,224,.06));border:1px solid rgba(16,212,144,.2);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--muted2);margin-bottom:14px;line-height:1.9">
+      ⚡ يستخدم <strong style="color:var(--green)">Google PageSpeed Insights API</strong> لتحليل سرعة موقعك الحقيقية — نفس البيانات التي يستخدمها Google في ترتيب المواقع. يشمل Core Web Vitals والفرص التحسينية.
+    </div>
+    <div class="field"><label>🔗 رابط الموقع أو المتجر *</label><input type="url" id="ps-url" placeholder="https://example.com"/></div>
+    <div class="speed-device-toggle">
+      <button class="device-btn active" id="ps-mobile-btn" onclick="setSpeedDevice('mobile',this)">📱 موبايل (الأهم لـ SEO)</button>
+      <button class="device-btn" id="ps-desktop-btn" onclick="setSpeedDevice('desktop',this)">🖥️ ديسكتوب</button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runPageSpeed()" style="background:linear-gradient(135deg,var(--green),#059669)">🚀 تحليل السرعة الآن</button>
+    </div>
+    <div class="loader" id="ps-loader"></div>
+    <div class="loader-text" id="ps-loader-text">⏳ جاري تحليل السرعة...</div>
+  </div>
+
+  <div id="ps-out" style="display:none">
+    <!-- Score Cards -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> نتائج السرعة — <span id="ps-device-label">موبايل</span></div>
+      <div class="speed-score-grid" id="ps-scores-grid"></div>
+    </div>
+
+    <!-- Core Web Vitals -->
+    <div class="card">
+      <div class="card-title"><span class="icon">⚡</span> Core Web Vitals — المقاييس الأساسية لـ Google</div>
+      <div class="metrics-grid" id="ps-metrics-grid"></div>
+    </div>
+
+    <!-- Opportunities -->
+    <div class="card" id="ps-opps-card">
+      <div class="card-title"><span class="icon">💡</span> فرص التحسين المقترحة</div>
+      <div class="opps-list" id="ps-opps-list"></div>
+    </div>
+
+    <!-- Diagnostics -->
+    <div class="card" id="ps-diag-card">
+      <div class="card-title"><span class="icon">🔬</span> التشخيصات التفصيلية</div>
+      <div id="ps-diag-list"></div>
+    </div>
+
+    <!-- AI Analysis -->
+    <div class="card" id="ps-ai-card" style="display:none">
+      <div class="card-title"><span class="icon">🤖</span> تحليل الذكاء الاصطناعي للسرعة</div>
+      <div class="loader" id="ps-ai-loader"></div>
+      <div id="ps-ai-text" style="font-size:13px;line-height:1.9;color:var(--text)"></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-ghost" onclick="document.getElementById('ps-out').style.display='none'">إخفاء النتائج</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI ASSISTANT FLOATING PANEL -->
+<button class="ai-float-btn" id="ai-float-btn" onclick="toggleAI()" title="AI Assistant — مساعد الذكاء الاصطناعي">
+  
+  <!-- الروبوت -->
+  <span class="ai-icon bot">
+    <dotlottie-wc src="https://lottie.host/1553bf31-4817-491a-9661-6a7ad9b79c4f/6mehp4NBYh.lottie"
+      style="width:50px;height:50px" autoplay loop>
+    </dotlottie-wc>
+  </span>
+
+  <!-- زر الإغلاق -->
+  <span class="ai-icon close">✕</span>
+
+</button>
+<div class="ai-assistant-panel" id="ai-panel">
+  <div class="ai-chat-header">
+    <div class="ai-chat-left">
+      <div class="ai-chat-avatar"><dotlottie-wc src="https://lottie.host/1553bf31-4817-491a-9661-6a7ad9b79c4f/6mehp4NBYh.lottie" style="width:50px;height:50px" autoplay loop></dotlottie-wc></div>
+      <div>
+        <div class="ai-chat-title">SEO AI Assistant</div>
+        <div class="ai-chat-sub">مساعدك الذكي لكل أسئلة الـ SEO</div>
+      </div>
+    </div>
+    <button class="ai-close-btn" onclick="toggleAI()">✕</button>
+  </div>
+  <div class="ai-quick-btns" id="ai-quick-btns">
+    <button class="ai-quick-btn" onclick="aiQuick('كيف أحسن سرعة متجري؟')">⚡ سرعة المتجر</button>
+    <button class="ai-quick-btn" onclick="aiQuick('ما هي أهم عوامل SEO لمتجر سلة؟')">🛒 SEO سلة</button>
+    <button class="ai-quick-btn" onclick="aiQuick('كيف أكتب Meta Description مثالية؟')">📝 Meta Description</button>
+    <button class="ai-quick-btn" onclick="aiQuick('ما هي Core Web Vitals وكيف أحسنها؟')">🌐 Core Web Vitals</button>
+  </div>
+  <div class="ai-messages" id="ai-messages">
+    <div class="ai-msg bot">👋 مرحباً! أنا مساعدك الذكي للـ SEO. اسألني عن أي شيء — سرعة الموقع، الكلمات المفتاحية، Schema، أو أي موضوع تحسين محركات البحث!</div>
+  </div>
+  <div class="ai-input-area">
+    <textarea class="ai-input" id="ai-input" placeholder="اكتب سؤالك هنا..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAIMessage()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+    <button class="ai-send-btn" onclick="sendAIMessage()">➤</button>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
