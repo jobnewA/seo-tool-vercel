@@ -78,7 +78,7 @@ function showFile(id, el) {
 }
 
 async function callAI(prompt, maxTok=2400) {
-  const model = (document.getElementById('model-id')?.value || '').trim() || 'google/gemini-2.0-flash-exp:free';
+  const model = (document.getElementById('model-id')?.value || '').trim() || 'inclusionai/ling-2.6-flash:free';
   try {
     const res = await fetch('/api/ai', {
       method: 'POST',
@@ -1555,7 +1555,7 @@ async function generateAltText(blob, filename) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: (document.getElementById('model-id')?.value || '').trim() || 'google/gemini-2.0-flash-exp:free',
+        model: (document.getElementById('model-id')?.value || '').trim() || 'inclusionai/ling-2.6-flash:free',
         max_tokens: 80,
         messages: [{ role: 'user', content: [
           { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${base64}` } },
@@ -2150,7 +2150,7 @@ async function sendAIMessage() {
   // Build history
   aiHistory.push({ role: 'user', content: msg });
 
-  const model = (document.getElementById('model-id')?.value || '').trim() || 'google/gemini-2.0-flash-exp:free';
+  const model = (document.getElementById('model-id')?.value || '').trim() || 'inclusionai/ling-2.6-flash:free';
   const systemPrompt = `أنت مساعد خبير في تحسين محركات البحث (SEO) والتجارة الإلكترونية. تتحدث بالعربية الفصحى البسيطة. تُقدم إجابات عملية ومفيدة ومختصرة. تُركز على الحلول العملية والخطوات الواضحة. خبرتك تشمل: SEO تقني، كتابة المحتوى، سرعة الموقع، Core Web Vitals، منصات سلة وزد وشوبيفاي، والتسويق الرقمي.`;
 
   try {
