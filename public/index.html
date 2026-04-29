@@ -9,24 +9,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
 <link rel="stylesheet" href="style.css">
-  <script>
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-document.onkeydown = function(e) {
-    if (e.keyCode == 123) return false; // F12
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false; // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false; // Ctrl+Shift+J
-    if (e.ctrlKey && e.keyCode == 85) return false; // Ctrl+U
-};
-    setInterval(function() {
-    if (window.outerWidth - window.innerWidth > 160 || 
-        window.outerHeight - window.innerHeight > 160) {
-        document.body.innerHTML = "🚫 ممنوع الفحص";
-    }
-}, 1000);
-</script>
 </head>
 <body>
 
@@ -53,8 +35,7 @@ document.onkeydown = function(e) {
 
 <div class="container">
 
-<!-- model-id hidden — used internally, no user input needed -->
-<input type="hidden" id="model-id" value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"/>
+<!-- model يُختار تلقائياً من السيرفر مع Fallback — لا حاجة لإدخال هنا -->
 
 <!-- TABS ROW 1 -->
 <div class="tabs">
@@ -641,8 +622,8 @@ document.onkeydown = function(e) {
       <div class="field">
         <label>عدد الكلمات المطلوبة</label>
         <select id="kwp-count">
-          <option value="20" selected>20 كلمة</option>
-          <option value="30">30 كلمة</option>
+          <option value="20">20 كلمة</option>
+          <option value="30" selected>30 كلمة</option>
           <option value="50">50 كلمة</option>
         </select>
       </div>
